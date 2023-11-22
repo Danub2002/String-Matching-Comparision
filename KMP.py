@@ -25,7 +25,7 @@ def kmp_matcher(text, pattern):
   pi = prefix_function(pattern)
   j = 0  # Matching Atual
 
-
+  occurrences = []
   for i in range(n):
     while j > 0 and text[i] != pattern[j]:
       # Buca um prefixo menor que da matching
@@ -37,10 +37,13 @@ def kmp_matcher(text, pattern):
       
     if j == m:  
       print("encontrei o padrao na posicao", i - m +1)
-      return True
+      occurrences.append(i - m + 1)  # +1 for 0-based indexing
+      # Update the current match length for the next potential match
+      j = pi[j - 1]
+
       
 
-  return False
+  
 
 
 
