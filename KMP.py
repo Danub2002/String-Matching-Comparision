@@ -1,3 +1,56 @@
+def compute_lps_array(pattern):
+  m = len(pattern)
+  lps = [0] * m
+  length = 0
+  i = 1
+
+  while i < m:
+    if pattern[i] == pattern[length]:
+      length += 1
+      lps[i] = length
+      i += 1
+    else:
+      if length != 0:
+        length = lps[length - 1]
+      else:
+        lps[i] = 0
+        i += 1
+
+    return lps
+
+def kmp_search(text, pattern):
+  n = len(text)
+  m = len(pattern)
+  comparisons = 0
+
+  lps = compute_lps_array(pattern)
+
+  i = j = 0
+  while i < n:
+    comparisons += 1
+    if pattern[j] == text[i]:
+      i += 1
+      j += 1
+
+      if j == m:
+        print(f"Pattern found at index {i - j}")
+        j = lps[j - 1]
+      else:
+        if j != 0:
+          j = lps[j - 1]
+        else:
+          i += 1
+
+  return comparisons
+
+text = "ABABDABACDABABCABAB"
+pattern = "ABABCABAB"
+total_comparisons = kmp_search(text, pattern)
+print(f"Total comparisons made: {total_comparisons}")
+
+
+
+'''
 def prefix_function(s):
   n = len(s)
   pi = [0]*n
@@ -24,10 +77,13 @@ def kmp_matcher(text, pattern):
   m = len(pattern)
   pi = prefix_function(pattern)
   j = 0  # Matching Atual
+  iterations = 0
 
   occurrences = []
   for i in range(n):
+    iterations += 1
     while j > 0 and text[i] != pattern[j]:
+      iterations += 1
       # Buca um prefixo menor que da matching
       j = pi[j - 1]
 
@@ -37,16 +93,9 @@ def kmp_matcher(text, pattern):
       
     if j == m:  
       print("encontrei o padrao na posicao", i - m +1)
-      occurrences.append(i - m + 1)  # +1 for 0-based indexing
+      occurrences.append(iterations)  # +1 for 0-based indexing
       # Update the current match length for the next potential match
       j = pi[j - 1]
-
-      
-
-  
-
-
-
-text = "ABCABABABACA"
-pattern = "ABABACA"
-print(kmp_matcher(text, pattern))
+    
+    return occurrences
+'''

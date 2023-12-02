@@ -29,9 +29,48 @@ checamos o valor na 'Bad Match Table', e pulamos o número de
 espaço do valor da tabela.
 '''
 
+def boyer_moore_horspool_search(text, pattern):
+    n = len(text)
+    m = len(pattern)
+    comparisons = 0
+
+    # Preprocess bad character heuristic
+    bad_char = {pattern[i]: max(1, m - i - 1) for i in range(m - 1)}
+
+    # Boyer-Moore-Horspool search
+    i = 0
+    while i <= n - m:
+        j = m - 1
+        while j >= 0 and pattern[j] == text[i + j]:
+            j -= 1
+            comparisons += 1
+
+        if j < 0:
+            # Pattern found at index i
+            print(f"Pattern found at index {i}")
+            i += 1
+        else:
+            char_shift = bad_char.get(text[i + j], m)
+            i += char_shift
+            comparisons += 1
+
+    return comparisons
+
+text = "ABABCABABABCABABCABAB"
+pattern = "ABABCABAB"
+total_comparisons = boyer_moore_horspool_search(text, pattern)
+print(f"Total comparisons made: {total_comparisons}")
+
+
+
+
+
+'''
 from collections import defaultdict
 
 def search(text, pattern):
+    iterations = 0
+
     M = len(pattern)
     N = len(text)
 
@@ -50,17 +89,17 @@ def search(text, pattern):
     k = M - 1
 
     while k < N:
+        iterations += 1
         j = M - 1
         i = k
         while j >= 0 and text[i] == pattern[j]:
+            iterations += 1
             j -= 1
             i -= 1
         if j == -1:
-            Indices.append(i+1)
+            Indices.append(iterations)
 
         k += Skip[ord(text[k])]
     
     return Indices
-
-if __name__ == '__main__':
-    print(search("eovadabcdftoyabcd", "abcd"))
+'''
