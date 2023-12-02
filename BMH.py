@@ -47,7 +47,7 @@ def boyer_moore_horspool_search(text, pattern):
 
         if j < 0:
             # Pattern found at index i
-            print(f"Pattern found at index {i}")
+            #print(f"Pattern found at index {i}")
             i += 1
         else:
             char_shift = bad_char.get(text[i + j], m)
@@ -55,14 +55,6 @@ def boyer_moore_horspool_search(text, pattern):
             comparisons += 1
 
     return comparisons
-
-text = "ABABCABABABCABABCABAB"
-pattern = "ABABCABAB"
-total_comparisons = boyer_moore_horspool_search(text, pattern)
-print(f"Total comparisons made: {total_comparisons}")
-
-
-
 
 
 '''

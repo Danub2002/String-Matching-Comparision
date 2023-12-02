@@ -3,6 +3,7 @@ def rabin_karp_search(text, pattern):
     n = len(text)
     m = len(pattern)
     comparisons = 0
+    matches = []
 
     # Define a prime number to use in hashing
     prime = 101
@@ -20,22 +21,25 @@ def rabin_karp_search(text, pattern):
 
     # Rabin-Karp search
     for i in range(n - m + 1):
-        if text_hash == pattern_hash and text[i:i+m] == pattern:
-            # Pattern found at index i
-            print(f"Pattern found at index {i}")
-        comparisons += 1
+        if text_hash == pattern_hash:
+            ind = 0
+            boo = True
+            for k in range (i, i+m):
+                comparisons += 1
+                if text[k] != pattern[ind]:
+                    boo = False
+                    break
+                ind += 1            
+            if boo:
+                # Pattern found at index i
+                #print(f"Pattern found at index {i}")
+                matches.append(i)
 
         # Update the hash value for the next substring
         if i < n - m:
             text_hash = (prime * (text_hash - ord(text[i]) * (prime**(m - 1))) + ord(text[i + m])) % (2**64)
 
-    return comparisons
-
-text = "ABABCABABABCABABCABAB"
-pattern = "ABABCABAB"
-total_comparisons = rabin_karp_search(text, pattern)
-print(f"Total comparisons made: {total_comparisons}")
-
+    return comparisons, matches
 
 
 '''
